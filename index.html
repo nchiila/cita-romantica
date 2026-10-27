@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cita Virtual en Discord</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: VT323 (Fuente estilo Minecraft/Pixel) e Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=VT323&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        mcPinkBg: '#ffe5ec',
+                        mcPinkCard: '#ffb3c6',
+                        mcPinkDark: '#ff758f',
+                        mcPinkBorder: '#c9184a',
+                        mcPinkLight: '#fff0f3',
+                        mcGreen: '#52b788',
+                        mcGreenDark: '#2d6a4f'
+                    },
+                    fontFamily: {
+                        pixel: ['"VT323"', 'monospace'],
+                        sans: ['"Nunito"', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #ffe5ec;
+            background-image: radial-gradient(#ffb3c6 2px, transparent 2px);
+            background-size: 24px 24px;
+        }
+
+        /* Efecto de borde estilo bloques de Minecraft */
+        .pixel-box {
+            box-shadow: 
+                -4px 0 0 0 #c9184a,
+                4px 0 0 0 #c9184a,
+                0 -4px 0 0 #c9184a,
+                0 4px 0 0 #c9184a,
+                -8px 8px 0 0 rgba(0,0,0,0.15);
+        }
+
+        .pixel-button {
+            box-shadow: 
+                inset -4px -4px 0px 0px #a4133c,
+                inset 4px 4px 0px 0px #ffb3c6;
+            transition: transform 0.1s;
+        }
+
+        .pixel-button:active {
+            transform: translate(2px, 2px);
+            box-shadow: 
+                inset -2px -2px 0px 0px #a4133c,
+                inset 2px 2px 0px 0px #ffb3c6;
+        }
+
+        /* Corazones flotantes de fondo */
+        .heart {
+            position: fixed;
+            color: #ff758f;
+            font-size: 20px;
+            user-select: none;
+            pointer-events: none;
+            animation: floatUp 8s linear infinite;
+            opacity: 0.6;
+            z-index: 0;
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(-10vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Imagen pixelada sin distorsión */
+        .pixel-art {
+            image-rendering: pixelated;
+            image-rendering: crisp-edges;
+        }
+    </style>
+</head>
+<body class="font-sans text-gray-800 min-h-screen flex flex-col justify-between items-center p-4 relative overflow-x-hidden">
+
+    <!-- Corazones Flotantes Animados -->
+    <div id="hearts-container"></div>
+
+    <!-- Contenedor Principal -->
+    <main class="w-full max-w-2xl bg-mcPinkLight border-4 border-mcPinkBorder p-6 md:p-8 my-8 rounded-lg pixel-box relative z-10">
+        
+        <!-- Encabezado -->
+        <header class="text-center mb-8 border-b-4 border-dashed border-mcPinkDark pb-6">
+            <div class="inline-block bg-mcPinkDark text-white font-pixel text-2xl md:text-3xl px-4 py-1 mb-4 rounded transform -rotate-1 shadow-md">
+                🎮 CITA ONLINE ESPECIAL 🌸
+            </div>
+            <h1 class="text-3xl md:text-5xl font-extrabold text-mcPinkBorder tracking-wide font-pixel">
+                ¡Nuestra Cita Virtual en Discord!
+            </h1>
+            <p class="text-sm md:text-base text-gray-700 mt-2 font-semibold">
+                Un momento reservado solo para los dos ✨
+            </p>
+
+            <!-- Pareja de Minecraft (Gráfico fiel recreado en SVG) -->
+            <div class="mt-6 flex justify-center items-center my-4">
+                <div class="relative max-w-xs md:max-w-sm">
+                    <svg viewBox="0 0 320 200" class="w-full h-auto pixel-art drop-shadow-xl" xmlns="http://www.w3.org/2000/svg">
+                        <!-- CHICO EN ARMADURA DE DIAMANTE (Izquierda) -->
+                        <g id="diamond-boy">
+                            <!-- Espada de Diamante / Morada Encantada -->
+                            <rect x="50" y="110" width="12" height="60" fill="#7b2cbf" />
+                            <rect x="46" y="145" width="20" height="8" fill="#5a189a" />
+                            <rect x="54" y="114" width="4" height="50" fill="#c77dff" />
+                            
+                            <!-- Cuerpo / Armadura Diamante -->
+                            <rect x="60" y="90" width="70" height="90" fill="#00b4d8" />
+                            <rect x="65" y="95" width="60" height="80" fill="#0077b6" />
+                            <rect x="70" y="100" width="50" height="70" fill="#90e0ef" />
+                            
+                            <!-- Casco Diamante -->
+                            <rect x="55" y="30" width="80" height="65" fill="#00b4d8" />
+                            <rect x="50" y="25" width="90" height="35" fill="#0077b6" />
+                            <!-- Cara dentro del casco -->
+                            <rect x="65" y="50" width="60" height="35" fill="#ffdbac" />
+                            <!-- Ojos -->
+                            <rect x="70" y="58" width="12" height="10" fill="#ffffff" />
+                            <rect x="76" y="58" width="6" height="10" fill="#023e8a" />
+                            <rect x="100" y="58" width="12" height="10" fill="#ffffff" />
+                            <rect x="100" y="58" width="6" height="10" fill="#023e8a" />
+                            <!-- Cabello/Flequillo -->
+                            <rect x="65" y="45" width="60" height="10" fill="#6c584c" />
+                            <!-- Brillos de encantamiento armadura -->
+                            <rect x="60" y="30" width="10" height="10" fill="#e0aaff" opacity="0.8" />
+                            <rect x="110" y="100" width="12" height="12" fill="#e0aaff" opacity="0.8" />
+                        </g>
+
+                        <!-- CHICA PELIRROJA (Derecha) -->
+                        <g id="alex-girl">
+                            <!-- Cuerpo / Túnica Naranja y Crema -->
+                            <rect x="135" y="95" width="70" height="85" fill="#f77f00" />
+                            <rect x="145" y="100" width="50" height="75" fill="#fdf0d5" />
+                            <rect x="140" y="130" width="60" height="15" fill="#38b000" /> <!-- Detalle verde -->
+                            
+                            <!-- Brazos / Mangas -->
+                            <rect x="200" y="100" width="25" height="70" fill="#f77f00" />
+                            <rect x="200" y="140" width="25" height="30" fill="#ffdbac" />
+                            <rect x="200" y="130" width="25" height="10" fill="#38b000" /> <!-- Vincha brazo verde -->
+
+                            <!-- Cabeza y Cabello -->
+                            <rect x="130" y="35" width="80" height="65" fill="#ff7b00" /> <!-- Pelo naranja base -->
+                            <rect x="135" y="50" width="65" height="40" fill="#ffdbac" /> <!-- Cara -->
+                            
+                            <!-- Ojos Verdes -->
+                            <rect x="145" y="60" width="12" height="10" fill="#ffffff" />
+                            <rect x="151" y="60" width="6" height="10" fill="#38b000" />
+                            <rect x="175" y="60" width="12" height="10" fill="#ffffff" />
+                            <rect x="175" y="60" width="6" height="10" fill="#38b000" />
+                            
+                            <!-- Vincha Verde en la cabeza -->
+                            <rect x="130" y="42" width="80" height="10" fill="#38b000" />
+                            
+                            <!-- Flequillo Naranja -->
+                            <rect x="135" y="48" width="65" height="10" fill="#d00000" />
+                            <rect x="130" y="35" width="20" height="65" fill="#f77f00" /> <!-- Caida de pelo costado -->
+                        </g>
+
+                        <!-- Corazón en medio de la pareja -->
+                        <g id="couple-heart">
+                            <path d="M150 25 L160 15 L170 25 L170 35 L160 45 L150 35 Z" fill="#ff0054" />
+                            <path d="M160 20 L165 15 L170 20 L170 25 L160 35 Z" fill="#ff5400" />
+                        </g>
+                    </svg>
+                </div>
+            </div>
+        </header>
+
+        <!-- Información Clave (Fecha, Hora, Ubicación) -->
+        <section class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+            <div class="bg-mcPinkCard border-2 border-mcPinkBorder p-4 rounded text-center shadow">
+                <span class="text-3xl">📅</span>
+                <h3 class="font-pixel text-xl font-bold text-mcPinkBorder mt-1">FECHA</h3>
+                <p class="font-bold text-gray-800">Martes 27/10/26</p>
+            </div>
+            <div class="bg-mcPinkCard border-2 border-mcPinkBorder p-4 rounded text-center shadow">
+                <span class="text-3xl">⏰</span>
+                <h3 class="font-pixel text-xl font-bold text-mcPinkBorder mt-1">HORA</h3>
+                <p class="font-bold text-gray-800">20:00 Hs (Arg)</p>
+            </div>
+            <div class="bg-mcPinkCard border-2 border-mcPinkBorder p-4 rounded text-center shadow">
+                <span class="text-3xl">🎧</span>
+                <h3 class="font-pixel text-xl font-bold text-mcPinkBorder mt-1">LUGAR</h3>
+                <p class="font-bold text-gray-800">Canal de Discord</p>
+            </div>
+        </section>
+
+        <!-- Cuenta Regresiva -->
+        <section class="bg-white border-2 border-mcPinkBorder p-6 rounded-lg text-center mb-8 shadow-inner">
+            <h2 class="font-pixel text-2xl md:text-3xl text-mcPinkBorder font-bold mb-3 flex items-center justify-center gap-2">
+                <span>⏳</span> CUENTA REGRESIVA PARA LA CITA
+            </h2>
+            <div class="grid grid-cols-4 gap-2 text-center max-w-md mx-auto font-pixel">
+                <div class="bg-mcPinkBg p-2 rounded border border-mcPinkDark">
+                    <span id="cd-days" class="text-3xl md:text-4xl font-bold text-mcPinkBorder">00</span>
+                    <p class="text-xs font-sans text-gray-600 font-semibold">DÍAS</p>
+                </div>
+                <div class="bg-mcPinkBg p-2 rounded border border-mcPinkDark">
+                    <span id="cd-hours" class="text-3xl md:text-4xl font-bold text-mcPinkBorder">00</span>
+                    <p class="text-xs font-sans text-gray-600 font-semibold">HORAS</p>
+                </div>
+                <div class="bg-mcPinkBg p-2 rounded border border-mcPinkDark">
+                    <span id="cd-minutes" class="text-3xl md:text-4xl font-bold text-mcPinkBorder">00</span>
+                    <p class="text-xs font-sans text-gray-600 font-semibold">MINS</p>
+                </div>
+                <div class="bg-mcPinkBg p-2 rounded border border-mcPinkDark">
+                    <span id="cd-seconds" class="text-3xl md:text-4xl font-bold text-mcPinkBorder">00</span>
+                    <p class="text-xs font-sans text-gray-600 font-semibold">SEGS</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Cronograma de la Cita -->
+        <section class="mb-8">
+            <h2 class="font-pixel text-3xl text-mcPinkBorder font-bold mb-4 text-center">
+                📋 CRONOGRAMA DE LA CITA
+            </h2>
+            <div class="space-y-4">
+                
+                <!-- Evento 1 -->
+                <div class="flex items-start bg-white p-4 rounded border-2 border-mcPinkCard shadow-sm">
+                    <div class="bg-mcPinkDark text-white font-pixel text-xl px-3 py-1 rounded mr-4 shrink-0">
+                        20:00
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-lg text-gray-800">🍳 Inicio & Cocina en Conjunto</h4>
+                        <p class="text-sm text-gray-600">Nos conectamos a Discord y preparamos nuestra cena juntos en simultáneo.</p>
+                    </div>
+                </div>
+
+                <!-- EVENTO IMPORTANTE: VESTUARIO -->
+                <div class="bg-red-50 border-4 border-red-400 p-4 rounded-lg shadow-md relative overflow-hidden">
+                    <div class="absolute -right-4 -top-4 bg-red-500 text-white font-pixel text-xs px-6 py-2 transform rotate-12 uppercase font-bold">
+                        ¡REQUISITO OBLIGATORIO!
+                    </div>
+                    <div class="flex items-start">
+                        <div class="bg-red-500 text-white font-pixel text-xl px-3 py-1 rounded mr-4 shrink-0">
+                            CAMBIO
+                        </div>
+                        <div>
+                            <h4 class="font-extrabold text-lg text-red-700 flex items-center gap-1">
+                                👔 Cambio de Vestuario Formal
+                            </h4>
+                            <p class="text-sm font-semibold text-red-900 mt-1">
+                                Al terminar de cocinar, hacemos pausa para vestirmos elegantes. 
+                                <span class="underline decoration-red-500 font-black">OBLIGATORIO: VESTIR FORMAL CON CHOMBA O CAMISA.</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Evento 2 -->
+                <div class="flex items-start bg-white p-4 rounded border-2 border-mcPinkCard shadow-sm">
+                    <div class="bg-mcPinkDark text-white font-pixel text-xl px-3 py-1 rounded mr-4 shrink-0">
+                        CENA
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-lg text-gray-800">🍽️ Gran Cena Virtual</h4>
+                        <p class="text-sm text-gray-600">Comemos juntitos vistiendo formales y disfrutando la charla.</p>
+                    </div>
+                </div>
+
+                <!-- Evento 3 -->
+                <div class="flex items-start bg-white p-4 rounded border-2 border-mcPinkCard shadow-sm">
+                    <div class="bg-mcPinkDark text-white font-pixel text-xl px-3 py-1 rounded mr-4 shrink-0">
+                        JUEGO 1
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-lg text-gray-800">🎨 Competencia de Dibujos</h4>
+                        <p class="text-sm text-gray-600">Demostramos nuestros dotes artísticos en un mano a mano divertido.</p>
+                    </div>
+                </div>
+
+                <!-- Evento 4 -->
+                <div class="flex items-start bg-white p-4 rounded border-2 border-mcPinkCard shadow-sm">
+                    <div class="bg-mcPinkDark text-white font-pixel text-xl px-3 py-1 rounded mr-4 shrink-0">
+                        JUEGO 2
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-lg text-gray-800">🧩 Armado de Rompecabezas</h4>
+                        <p class="text-sm text-gray-600">Trabajo en equipo para armar puzzles online.</p>
+                    </div>
+                </div>
+
+                <!-- Evento 5 -->
+                <div class="flex items-start bg-white p-4 rounded border-2 border-mcPinkCard shadow-sm">
+                    <div class="bg-mcPinkDark text-white font-pixel text-xl px-3 py-1 rounded mr-4 shrink-0">
+                        CIERRE
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-lg text-gray-800">🍿 Película de Anime</h4>
+                        <p class="text-sm text-gray-600">Elegimos una peli de anime entre ambos para cerrar la noche de la mejor manera.</p>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Botón de Confirmación -->
+        <section class="text-center pt-4 border-t-4 border-dashed border-mcPinkDark">
+            <h2 class="font-pixel text-2xl text-mcPinkBorder font-bold mb-3">
+                ¿ACEPTÁS ESTA CITA?
+            </h2>
+            <p class="text-sm text-gray-600 mb-4">Hacé clic abajo para confirmar tu presencia por WhatsApp</p>
+            
+            <a 
+                id="btn-confirm"
+                href="#"
+                target="_blank"
+                class="inline-block bg-mcGreen hover:bg-mcGreenDark text-white font-pixel text-2xl md:text-3xl px-8 py-4 rounded-lg border-4 border-emerald-800 pixel-button shadow-lg transform hover:-translate-y-1 transition duration-150"
+            >
+                ✅ CONFIRMAR PRESENCIA
+            </a>
+        </section>
+
+    </main>
+
+    <footer class="text-center text-xs font-bold text-mcPinkBorder my-4 relative z-10">
+        Creado especialmente para nuestra cita especial 💕
+    </footer>
+
+    <!-- Lógica de JavaScript -->
+    <script>
+        // 1. Configuración de Corazones Flotantes
+        function createHeart() {
+            const container = document.getElementById('hearts-container');
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            heart.innerHTML = '💖';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = (Math.random() * 4 + 4) + 's';
+            heart.style.fontSize = (Math.random() * 15 + 15) + 'px';
+            container.appendChild(heart);
+
+            setTimeout(() => {
+                heart.remove();
+            }, 8000);
+        }
+        setInterval(createHeart, 600);
+
+        // 2. Enlace de WhatsApp
+        const phoneNumber = "5493757625280";
+        const message = "confirmo mi presencial a la cita romantica del dia 27/10/26 <3";
+        const encodedMessage = encodeURIComponent(message);
+        const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
+        document.getElementById('btn-confirm').href = whatsappUrl;
+
+        // 3. Cuenta Regresiva (Mañana Martes 27 a las 20:00 hs)
+        const targetDate = new Date(2026, 9, 27, 20, 0, 0).getTime();
+
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const difference = targetDate - now;
+
+            if (difference > 0) {
+                const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+
+                document.getElementById('cd-days').innerText = String(days).padStart(2, '0');
+                document.getElementById('cd-hours').innerText = String(hours).padStart(2, '0');
+                document.getElementById('cd-minutes').innerText = String(minutes).padStart(2, '0');
+                document.getElementById('cd-seconds').innerText = String(seconds).padStart(2, '0');
+            } else {
+                document.getElementById('cd-days').innerText = "00";
+                document.getElementById('cd-hours').innerText = "00";
+                document.getElementById('cd-minutes').innerText = "00";
+                document.getElementById('cd-seconds').innerText = "00";
+            }
+        }
+
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
+    </script>
+</body>
+</html>
